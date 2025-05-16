@@ -1,0 +1,21 @@
+{
+  "name": "specsintegration",
+  "version": "1.0.0",
+  "description": "Project for fetching specs",
+  "main": "update-metafields.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node scheduled.js"
+  },
+  "author": "Webobscure",
+  "license": "ISC",
+  "dependencies": {
+    "@shopify/shopify-api": "^11.12.0",
+    "async": "^3.2.6",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "mysql2": "^3.14.1",
+    "node-cron": "^4.0.5",
+    "shopify-api-node": "^3.15.0"
+  }
+}
