@@ -13,9 +13,9 @@ function log(message) {
 
 // Запускаем каждый день в 03:00 утра
 cron.schedule('0 3 * * *', () => {
-  log('⏱ Запуск update-metafields.js...');
+  log('⏱ Запуск updater.js...');
 
-  exec('node update-metafields.js', (error, stdout, stderr) => {
+  exec('node updater.js', (error, stdout, stderr) => {
     if (error) {
       log(`❌ Ошибка: ${error.message}`);
       return;
