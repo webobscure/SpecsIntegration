@@ -1,6 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
-const { logToFile } = require("./utils/logger");
+const { logToFile } = require("../utils/logger");
 
 const axiosInstance = axios.create({
   baseURL: `https://${process.env.SHOPIFY_SHOP_NAME}.myshopify.com/admin/api/${process.env.SHOPIFY_API_VERSION}/`,

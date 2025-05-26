@@ -7,7 +7,7 @@ const {
   getProducts,
   updateOrCreateMetafield,
   handleRateLimits,
-} = require("./services/shopifyApi");
+} = require("./configs/shopifyApi");
 
 const {
   formatDimensions,
@@ -56,6 +56,7 @@ async function updateMetafieldsFromAPI(config) {
         const qty20 = data?.["QTY 20 GP"];
         const qty40 = data?.["QTY 40 HQ"];
         const individual = data?.individual;
+        
 
         if (!euro?.prodInfo) {
           logToFile(`⚠️ Нет prodInfo для ${modelName}`);
@@ -64,7 +65,7 @@ async function updateMetafieldsFromAPI(config) {
 
         const updates = [
           { key: "prod_dimensions", value: formatDimensions(euro.prodInfo) },
-          { key: "pallet_dimensions", value: formatDimensions(euro.palletInfo) },
+          // { key: "pallet_dimensions", value: formatDimensions(euro.palletInfo) },
           { key: "individual_dimensions", value: formatDimensions(individual) },
           {
             key: "weight_one_prod",
