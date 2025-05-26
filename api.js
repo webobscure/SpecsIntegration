@@ -1,6 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
-const { logToFile } = require("./logger");
+const { logToFile } = require("./utils/logger");
 
 const axiosInstance = axios.create({
   baseURL: `https://${process.env.SHOPIFY_SHOP_NAME}.myshopify.com/admin/api/${process.env.SHOPIFY_API_VERSION}/`,
@@ -25,7 +25,7 @@ async function handleRateLimits(headers) {
   }
 }
 
-async function getProducts(since_id = 0, limit = 50) {
+async function getProducts(axiosInstance, since_id = 0, limit = 50) {
   try {
     const resp = await axiosInstance.get("products.json", {
       params: { limit, since_id },
@@ -34,12 +34,12 @@ async function getProducts(since_id = 0, limit = 50) {
     return resp.data.products || [];
   } catch (err) {
     logToFile(`❌ Ошибка получения продуктов: ${err.message}`);
-    await new Promise((r) => setTimeout(r, 2000)); // задержка на 2 сек.
+    await new Promise((r) => setTimeout(r, 2000));
     return [];
   }
 }
 
-async function updateOrCreateMetafield(productId, namespace, key, value) {
+async function updateOrCreateMetafield(axiosInstance, productId, namespace, key, value) {
   try {
     if (!value || String(value).trim() === "") {
       logToFile(`⚠️ Пропущено ${key} из-за пустого значения`);
@@ -70,6 +70,7 @@ async function updateOrCreateMetafield(productId, namespace, key, value) {
     logToFile(`❌ Ошибка метафилда ${key}: ${msg}`);
   }
 }
+
 
 module.exports = {
   getProducts,

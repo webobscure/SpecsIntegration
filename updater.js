@@ -1,19 +1,35 @@
+require("dotenv").config();
 const axios = require("axios");
-const { getProducts, updateOrCreateMetafield, axiosInstance, handleRateLimits } = require("./api");
-const { formatDimensions, sleep, removeTrailingZeros } = require("./utils");
-const { logToFile } = require("./logger");
+const createShopifyClient = require("./clients/createShopifyClient");
+const shopConfigs = require("./configs/shopConfigs");
 
-async function updateMetafieldsFromAPI() {
+const {
+  getProducts,
+  updateOrCreateMetafield,
+  handleRateLimits,
+} = require("./services/shopifyApi");
+
+const {
+  formatDimensions,
+  sleep,
+  removeTrailingZeros,
+} = require("./utils/utils");
+const { logToFile } = require("./utils/logger");
+
+async function updateMetafieldsFromAPI(config) {
+  const axiosInstance = createShopifyClient(config);
   let since_id = 0;
   const limit = 50;
 
   while (true) {
-    const products = await getProducts(since_id, limit);
+    const products = await getProducts(axiosInstance, since_id, limit);
     if (products.length === 0) break;
 
     for (const product of products) {
       try {
-        const metafieldsResp = await axiosInstance.get(`products/${product.id}/metafields.json`);
+        const metafieldsResp = await axiosInstance.get(
+          `products/${product.id}/metafields.json`
+        );
         await handleRateLimits(metafieldsResp.headers);
         const metafields = metafieldsResp.data.metafields;
 
@@ -66,14 +82,16 @@ async function updateMetafieldsFromAPI() {
           { key: "all_boxes", value: euro.allBoxes },
           {
             key: "total_weight",
-            value: euro.totalWeight ? removeTrailingZeros(Number(euro.totalWeight).toFixed(2)) : null,
+            value: euro.totalWeight
+              ? removeTrailingZeros(Number(euro.totalWeight).toFixed(2))
+              : null,
           },
           { key: "qty_20gp_boxes", value: qty20?.allBoxes },
           { key: "qty_40hq_boxes", value: qty40?.allBoxes },
         ];
 
         for (const { key, value } of updates) {
-          await updateOrCreateMetafield(product.id, "cargo_data", key, value);
+          await updateOrCreateMetafield(axiosInstance, product.id, "cargo_data", key, value);
           await sleep(600);
         }
 
@@ -86,7 +104,12 @@ async function updateMetafieldsFromAPI() {
     since_id = products[products.length - 1].id;
   }
 
-  logToFile("✅ Обновление завершено!");
+  logToFile(`✅ Магазин ${config.name} — обновление завершено!`);
 }
 
-updateMetafieldsFromAPI();
+(async () => {
+  for (const config of shopConfigs) {
+    logToFile(`🔄 Начинаем обработку: ${config.name}`);
+    await updateMetafieldsFromAPI(config);
+  }
+})();
