@@ -13,6 +13,7 @@ const {
   formatDimensions,
   sleep,
   removeTrailingZeros,
+  convertKgToLbs,
 } = require("./utils/utils");
 const { logToFile } = require("./utils/logger");
 
@@ -33,7 +34,9 @@ async function updateMetafieldsFromAPI(config) {
         await handleRateLimits(metafieldsResp.headers);
         const metafields = metafieldsResp.data.metafields;
 
-        const modelField = metafields.find((f) => f.key === "modelnameformanual");
+        const modelField = metafields.find(
+          (f) => f.key === "modelnameformanual" && f.namespace === "custom"
+        );
         if (!modelField) {
           logToFile(`❌ У продукта ${product.title} нет modelnameformanual`);
           continue;
@@ -56,43 +59,90 @@ async function updateMetafieldsFromAPI(config) {
         const qty20 = data?.["QTY 20 GP"];
         const qty40 = data?.["QTY 40 HQ"];
         const individual = data?.individual;
-        
+        const usa = data?.usa_palet;
 
         if (!euro?.prodInfo) {
           logToFile(`⚠️ Нет prodInfo для ${modelName}`);
           continue;
         }
 
+        const isUS = config.name === "US";
+
         const updates = [
-          { key: "prod_dimensions", value: formatDimensions(euro.prodInfo) },
-          // { key: "pallet_dimensions", value: formatDimensions(euro.palletInfo) },
-          { key: "individual_dimensions", value: formatDimensions(individual) },
           {
-            key: "weight_one_prod",
-            value: euro.prodInfo.weightOneProd
-              ? removeTrailingZeros(Number(euro.prodInfo.weightOneProd).toFixed(2))
-              : null,
+            key: "prod_dimensions",
+            value: formatDimensions(euro.prodInfo, isUS, true),
           },
-          {
-            key: "weight",
-            value: euro.prodInfo.weight
-              ? removeTrailingZeros(Number(euro.prodInfo.weight).toFixed(2))
-              : null,
-          },
-          { key: "count_in_box", value: euro.prodInfo.countInBox },
-          { key: "all_boxes", value: euro.allBoxes },
-          {
-            key: "total_weight",
-            value: euro.totalWeight
-              ? removeTrailingZeros(Number(euro.totalWeight).toFixed(2))
-              : null,
-          },
-          { key: "qty_20gp_boxes", value: qty20?.allBoxes },
-          { key: "qty_40hq_boxes", value: qty40?.allBoxes },
+          // {
+          //   key: "pallet_dimensions",
+          //   value: formatDimensions(euro.palletInfo, isUS),
+          // },
+          // {
+          //   key: "individual_dimensions",
+          //   value: formatDimensions(individual, isUS),
+          // },
+          // {
+          //   key: "weight_one_prod",
+          //   value: euro.prodInfo.weightOneProd
+          //     ? removeTrailingZeros(
+          //         (isUS
+          //           ? convertKgToLbs(Number(euro.prodInfo.weightOneProd))
+          //           : Number(euro.prodInfo.weightOneProd)
+          //         ).toFixed(2)
+          //       )
+          //     : null,
+          // },
+          // {
+          //   key: "weight",
+          //   value: euro.prodInfo.weight
+          //     ? removeTrailingZeros(
+          //         (isUS
+          //           ? convertKgToLbs(Number(euro.prodInfo.weight))
+          //           : Number(euro.prodInfo.weight)
+          //         ).toFixed(2)
+          //       )
+          //     : null,
+          // },
+          // {
+          //   key: "count_in_box",
+          //   value: isUS
+          //     ? usa?.prodInfo?.countInBox
+          //     : euro?.prodInfo?.countInBox,
+          // },
+          // {
+          //   key: "all_boxes",
+          //   value: isUS ? usa?.allBoxes : euro?.allBoxes,
+          // },
+          // {
+          //   key: "total_weight",
+          //   value: euro.totalWeight
+          //     ? removeTrailingZeros(
+          //         (isUS
+          //           ? convertKgToLbs(Number(euro.totalWeight))
+          //           : Number(euro.totalWeight)
+          //         ).toFixed(2)
+          //       )
+          //     : null,
+          // },
+          // {
+          //   key: "qty_20gp_boxes",
+          //   value: qty20?.allBoxes,
+          // },
+          // {
+          //   key: "qty_40hq_boxes",
+          //   value: qty40?.allBoxes,
+          // },
         ];
 
         for (const { key, value } of updates) {
-          await updateOrCreateMetafield(axiosInstance, product.id, "cargo_data", key, value);
+          await updateOrCreateMetafield(
+            axiosInstance,
+            product.id,
+            "cargo_data",
+            key,
+            value,
+
+          );
           await sleep(600);
         }
 

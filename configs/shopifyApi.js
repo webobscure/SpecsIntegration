@@ -39,17 +39,27 @@ async function getProducts(axiosInstance, since_id = 0, limit = 50) {
   }
 }
 
-async function updateOrCreateMetafield(axiosInstance, productId, namespace, key, value) {
+async function updateOrCreateMetafield(
+  axiosInstance,
+  productId,
+  namespace,
+  key,
+  value,
+) {
   try {
     if (!value || String(value).trim() === "") {
       logToFile(`⚠️ Пропущено ${key} из-за пустого значения`);
       return;
     }
 
-    const resp = await axiosInstance.get(`products/${productId}/metafields.json`);
+    const resp = await axiosInstance.get(
+      `products/${productId}/metafields.json`
+    );
     await handleRateLimits(resp.headers);
     const existing = resp.data.metafields;
-    const found = existing.find(m => m.namespace === namespace && m.key === key);
+    const found = existing.find(
+      (m) => m.namespace === namespace && m.key === key
+    );
 
     const safeValue = String(value).substring(0, 255);
     const valueType = "single_line_text_field";
@@ -58,23 +68,24 @@ async function updateOrCreateMetafield(axiosInstance, productId, namespace, key,
       await axiosInstance.put(`metafields/${found.id}.json`, {
         metafield: { id: found.id, value: safeValue, type: valueType },
       });
-      logToFile(`🔁 Обновлено: ${key} = ${safeValue}`);
+      logToFile(`🔁 Обновлено для ${productId}: ${key} = ${safeValue}`);
     } else {
       await axiosInstance.post(`products/${productId}/metafields.json`, {
         metafield: { namespace, key, value: safeValue, type: valueType },
       });
-      logToFile(`🆕 Создано: ${key} = ${safeValue}`);
+      logToFile(`🆕 Создано для ${productId}: ${key} = ${safeValue}`);
     }
   } catch (err) {
-    const msg = err.response?.data ? JSON.stringify(err.response.data, null, 2) : err.message;
+    const msg = err.response?.data
+      ? JSON.stringify(err.response.data, null, 2)
+      : err.message;
     logToFile(`❌ Ошибка метафилда ${key}: ${msg}`);
   }
 }
-
 
 module.exports = {
   getProducts,
   updateOrCreateMetafield,
   axiosInstance,
-  handleRateLimits
+  handleRateLimits,
 };

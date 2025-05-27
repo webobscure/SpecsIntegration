@@ -11,8 +11,8 @@ function log(message) {
   fs.appendFileSync(logFile, line + '\n');
 }
 
-// Запускаем каждый день в 03:00 утра
-cron.schedule('0 3 * * *', () => {
+// Запускаем каждый день в 7 вечера(только на 27.05.2025)
+cron.schedule('0 19 * * *', () => {
   log('⏱ Запуск updater.js...');
 
   exec('node updater.js', (error, stdout, stderr) => {
