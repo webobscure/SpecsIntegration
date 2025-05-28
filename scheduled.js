@@ -12,7 +12,7 @@ function log(message) {
 }
 
 // Запускаем каждый день в 7 вечера(только на 27.05.2025)
-cron.schedule('0 19 * * *', () => {
+cron.schedule('30 7 * * *', () => {
   log('⏱ Запуск updater.js...');
 
   exec('node updater.js', (error, stdout, stderr) => {
