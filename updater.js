@@ -73,65 +73,65 @@ async function updateMetafieldsFromAPI(config) {
             key: "prod_dimensions",
             value: formatDimensions(euro.prodInfo, isUS, true),
           },
-          // {
-          //   key: "pallet_dimensions",
-          //   value: formatDimensions(euro.palletInfo, isUS),
-          // },
-          // {
-          //   key: "individual_dimensions",
-          //   value: formatDimensions(individual, isUS),
-          // },
-          // {
-          //   key: "weight_one_prod",
-          //   value: euro.prodInfo.weightOneProd
-          //     ? removeTrailingZeros(
-          //         (isUS
-          //           ? convertKgToLbs(Number(euro.prodInfo.weightOneProd))
-          //           : Number(euro.prodInfo.weightOneProd)
-          //         ).toFixed(2)
-          //       )
-          //     : null,
-          // },
-          // {
-          //   key: "weight",
-          //   value: euro.prodInfo.weight
-          //     ? removeTrailingZeros(
-          //         (isUS
-          //           ? convertKgToLbs(Number(euro.prodInfo.weight))
-          //           : Number(euro.prodInfo.weight)
-          //         ).toFixed(2)
-          //       )
-          //     : null,
-          // },
-          // {
-          //   key: "count_in_box",
-          //   value: isUS
-          //     ? usa?.prodInfo?.countInBox
-          //     : euro?.prodInfo?.countInBox,
-          // },
-          // {
-          //   key: "all_boxes",
-          //   value: isUS ? usa?.allBoxes : euro?.allBoxes,
-          // },
-          // {
-          //   key: "total_weight",
-          //   value: euro.totalWeight
-          //     ? removeTrailingZeros(
-          //         (isUS
-          //           ? convertKgToLbs(Number(euro.totalWeight))
-          //           : Number(euro.totalWeight)
-          //         ).toFixed(2)
-          //       )
-          //     : null,
-          // },
-          // {
-          //   key: "qty_20gp_boxes",
-          //   value: qty20?.allBoxes,
-          // },
-          // {
-          //   key: "qty_40hq_boxes",
-          //   value: qty40?.allBoxes,
-          // },
+          {
+            key: "pallet_dimensions",
+            value: formatDimensions(euro.palletInfo, isUS),
+          },
+          {
+            key: "individual_dimensions",
+            value: formatDimensions(individual, isUS),
+          },
+          {
+            key: "weight_one_prod",
+            value: euro.prodInfo.weightOneProd
+              ? removeTrailingZeros(
+                  (isUS
+                    ? convertKgToLbs(Number(euro.prodInfo.weightOneProd))
+                    : Number(euro.prodInfo.weightOneProd)
+                  ).toFixed(2)
+                )
+              : null,
+          },
+          {
+            key: "weight",
+            value: euro.prodInfo.weight
+              ? removeTrailingZeros(
+                  (isUS
+                    ? convertKgToLbs(Number(euro.prodInfo.weight))
+                    : Number(euro.prodInfo.weight)
+                  ).toFixed(2)
+                )
+              : null,
+          },
+          {
+            key: "count_in_box",
+            value: isUS
+              ? usa?.prodInfo?.countInBox
+              : euro?.prodInfo?.countInBox,
+          },
+          {
+            key: "all_boxes",
+            value: isUS ? usa?.allBoxes : euro?.allBoxes,
+          },
+          {
+            key: "total_weight",
+            value: euro.totalWeight
+              ? removeTrailingZeros(
+                  (isUS
+                    ? convertKgToLbs(Number(euro.totalWeight))
+                    : Number(euro.totalWeight)
+                  ).toFixed(2)
+                )
+              : null,
+          },
+          {
+            key: "qty_20gp_boxes",
+            value: qty20?.allBoxes,
+          },
+          {
+            key: "qty_40hq_boxes",
+            value: qty40?.allBoxes,
+          },
         ];
 
         for (const { key, value } of updates) {

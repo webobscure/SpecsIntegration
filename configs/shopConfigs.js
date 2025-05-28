@@ -1,26 +1,26 @@
 module.exports = [
    
-  // {
-  //   name: "US",
-  //   shopName: process.env.SHOPIFY_US_STORE,
-  //   apiVersion: process.env.SHOPIFY_API_VERSION,
-  //   apiKey: process.env.SHOPIFY_US_API_KEY,
-  //   apiPassword: process.env.SHOPIFY_US_ACCESS_TOKEN,
-  // },
-  // {
-  //   name: "UK",
-  //   shopName: process.env.SHOPIFY_UK_STORE,
-  //   apiVersion: process.env.SHOPIFY_API_VERSION,
-  //   apiKey: process.env.SHOPIFY_UK_API_KEY,
-  //   apiPassword: process.env.SHOPIFY_UK_ACCESS_TOKEN,
-  // },
-  // {
-  //   name: "DE",
-  //   shopName: process.env.SHOPIFY_DE_STORE,
-  //   apiVersion: process.env.SHOPIFY_API_VERSION,
-  //   apiKey: process.env.SHOPIFY_DE_API_KEY,
-  //   apiPassword: process.env.SHOPIFY_DE_ACCESS_TOKEN,
-  // },
+  {
+    name: "US",
+    shopName: process.env.SHOPIFY_US_STORE,
+    apiVersion: process.env.SHOPIFY_API_VERSION,
+    apiKey: process.env.SHOPIFY_US_API_KEY,
+    apiPassword: process.env.SHOPIFY_US_ACCESS_TOKEN,
+  },
+  {
+    name: "UK",
+    shopName: process.env.SHOPIFY_UK_STORE,
+    apiVersion: process.env.SHOPIFY_API_VERSION,
+    apiKey: process.env.SHOPIFY_UK_API_KEY,
+    apiPassword: process.env.SHOPIFY_UK_ACCESS_TOKEN,
+  },
+  {
+    name: "DE",
+    shopName: process.env.SHOPIFY_DE_STORE,
+    apiVersion: process.env.SHOPIFY_API_VERSION,
+    apiKey: process.env.SHOPIFY_DE_API_KEY,
+    apiPassword: process.env.SHOPIFY_DE_ACCESS_TOKEN,
+  },
    {
     name: "PL",
     shopName: process.env.SHOPIFY_PL_STORE,
