@@ -2,7 +2,7 @@ require('dotenv').config();
 const cron = require('node-cron');
 const { spawn } = require('child_process');
 const fs = require('fs');
-const chalk = require('chalk'); // npm install chalk
+const chalk = require('chalk'); 
 
 const logFile = './cron_output.log';
 

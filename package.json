@@ -13,6 +13,7 @@
     "@shopify/shopify-api": "^11.12.0",
     "async": "^3.2.6",
     "axios": "^1.9.0",
+    "chalk": "^5.6.2",
     "child_process": "^1.0.2",
     "dotenv": "^16.5.0",
     "mysql2": "^3.14.1",
