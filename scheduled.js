@@ -13,7 +13,7 @@ function log(message) {
 }
 
 // Планировщик: каждую среду в 15:05 0 8 * * 6
-cron.schedule('5 15 * * 2', () => {
+cron.schedule('0 8 * * 3', () => {
   log('⏱ Запуск updater.js...');
 
   const child = spawn('node', ['updater.js']);
