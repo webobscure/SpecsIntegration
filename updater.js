@@ -97,8 +97,8 @@ async function updateMetafieldsFromAPI(config) {
             value: euro.prodInfo.weight
               ? removeTrailingZeros(
                   (isUS
-                    ? convertKgToLbs(Number(euro.prodInfo.weight))
-                    : Number(euro.prodInfo.weight)
+                    ? convertKgToLbs(toNumber(euro.prodInfo.weight))
+                    : toNumber(euro.prodInfo.weight)
                   ).toFixed(2)
                 )
               : null,
@@ -140,8 +140,7 @@ async function updateMetafieldsFromAPI(config) {
             product.id,
             "cargo_data",
             key,
-            value,
-
+            value
           );
           await sleep(600);
         }
