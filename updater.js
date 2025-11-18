@@ -14,6 +14,8 @@ const {
   sleep,
   removeTrailingZeros,
   convertKgToLbs,
+  toNumber,
+  hasValue,
 } = require("./utils/utils");
 const { logToFile } = require("./utils/logger");
 
@@ -94,7 +96,7 @@ async function updateMetafieldsFromAPI(config) {
           },
           {
             key: "weight",
-            value: euro.prodInfo.weight
+            value:  hasValue(euro.prodInfo.weight)
               ? removeTrailingZeros(
                   (isUS
                     ? convertKgToLbs(toNumber(euro.prodInfo.weight))

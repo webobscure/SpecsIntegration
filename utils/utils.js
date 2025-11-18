@@ -28,6 +28,9 @@ function convertKgToLbs(kg) {
   return +(kg * 2.205).toFixed(2);
 }
 
+function hasValue(val) {
+  return val !== undefined && val !== null && val !== '';
+}
 
 function toNumber(value) {
   if (value === null || value === undefined) return NaN;
@@ -40,4 +43,4 @@ function sleep(ms) {
 function removeTrailingZeros(value) {
   return value.replace(/\.?0+$/, ""); // Убирает .00, .0, .000 и т.п.
 }
-module.exports = { formatDimensions,convertKgToLbs, sleep, removeTrailingZeros, toNumber};
+module.exports = { formatDimensions,convertKgToLbs, sleep, removeTrailingZeros, toNumber, hasValue};
