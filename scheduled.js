@@ -12,8 +12,8 @@ function log(message) {
   fs.appendFileSync(logFile, line + '\n');
 }
 
-// Планировщик: каждую среду в 14:55 0 8 * * 6
-cron.schedule('0 15 * * 3', () => {
+// Планировщик: каждую среду в 15:05 0 8 * * 6
+cron.schedule('5 15 * * 2', () => {
   log('⏱ Запуск updater.js...');
 
   const child = spawn('node', ['updater.js']);
